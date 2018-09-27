@@ -159,6 +159,8 @@ export type Props = {
   isOptionSelected?: (OptionType, OptionsType) => boolean,
   /* Support multiple selected options */
   isMulti: boolean,
+  /* Is the select required */
+  isRequired: boolean,
   /* Is the select direction right-to-left */
   isRtl: boolean,
   /* Whether to enable search functionality */
@@ -245,6 +247,7 @@ export const defaultProps = {
   isLoading: false,
   isMulti: false,
   isRtl: false,
+  isRequired: false,
   isSearchable: true,
   isOptionDisabled: isOptionDisabled,
   loadingMessage: () => 'Loading...',
@@ -1677,7 +1680,7 @@ export default class Select extends Component<Props, State> {
     );
   }
   renderFormField() {
-    const { delimiter, isDisabled, isMulti, name } = this.props;
+    const { delimiter, isDisabled, isMulti, isRequired, name } = this.props;
     const { selectValue } = this.state;
 
     if (!name || isDisabled) return;
@@ -1687,7 +1690,7 @@ export default class Select extends Component<Props, State> {
         const value = selectValue
           .map(opt => this.getOptionValue(opt))
           .join(delimiter);
-        return <input name={name} type="hidden" value={value} />;
+        return <input name={name} type="hidden" value={value} required={isRequired} />;
       } else {
         const input =
           selectValue.length > 0 ? (
@@ -1696,11 +1699,12 @@ export default class Select extends Component<Props, State> {
                 key={`i-${i}`}
                 name={name}
                 type="hidden"
+                required={isRequired}
                 value={this.getOptionValue(opt)}
               />
             ))
           ) : (
-            <input name={name} type="hidden" />
+            <input name={name} required={isRequired} type="hidden" />
           );
 
         return <div>{input}</div>;
