@@ -1711,7 +1711,7 @@ export default class Select extends Component<Props, State> {
       }
     } else {
       const value = selectValue[0] ? this.getOptionValue(selectValue[0]) : '';
-      return <input name={name} type="hidden" value={value} />;
+      return <input name={name} type="hidden" required={isRequired} value={value} />;
     }
   }
 
